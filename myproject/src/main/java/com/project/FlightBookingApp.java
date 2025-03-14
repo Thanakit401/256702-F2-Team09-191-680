@@ -12,6 +12,7 @@ public class FlightBookingApp extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Online Flight Booking");
@@ -29,25 +30,32 @@ public class FlightBookingApp extends Application {
         DatePicker datePicker = new DatePicker();
         
         Label classLabel = new Label("Class:");
-        ComboBox<String> classComboBox = createComboBox(new String[]{"Economy","Premium Economy", "Business", "First Class"});
+        ComboBox<String> classComboBox = createComboBox(new String[]{"Economy", "Business", "First Class"});
         
         Label seatsLabel = new Label("Seats:");
         Spinner<Integer> seatsSpinner = new Spinner<>(1, 10, 1);
         
         Button bookButton = new Button("Book Now");
         bookButton.setOnAction(e -> {
-            String airline = getSelectedValue(airlineComboBox);
-            String from = getSelectedValue(fromComboBox);
-            String to = getSelectedValue(toComboBox);
-            String date = datePicker.getValue() != null ? datePicker.getValue().toString() : "Not selected";
-            String travelClass = getSelectedValue(classComboBox);
-            int seats = seatsSpinner.getValue();
-            
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Booking Confirmation");
-            alert.setHeaderText("Booking Successful!");
-            alert.setContentText("Airline: " + airline + "\nFrom: " + from + "\nTo: " + to + "\nDate: " + date + "\nClass: " + travelClass + "\nSeats: " + seats);
-            alert.showAndWait();
+            String selectedClass = classComboBox.getValue();
+            if (selectedClass != null) {
+                Stage seatingWindow = new Stage();
+                switch (selectedClass) {
+                    case "Economy":
+                        new AirplaneSeating().start(seatingWindow);
+                        break;
+                    case "Business":
+                        new AirplaneSeating2().start(seatingWindow);
+                        break;
+                    case "First Class":
+                        new AirplaneSeating3().start(seatingWindow);
+                        break;
+                    default:
+                        showAlert("Please select a valid class.");
+                }
+            } else {
+                showAlert("Please select a class before booking.");
+            }
         });
         
         VBox layout = new VBox(10);
@@ -74,9 +82,11 @@ public class FlightBookingApp extends Application {
         return comboBox;
     }
     
-    private String getSelectedValue(ComboBox<String> comboBox) {
-        return comboBox.getValue() != null ? comboBox.getValue() : "Not selected";
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
-    
 }
-
