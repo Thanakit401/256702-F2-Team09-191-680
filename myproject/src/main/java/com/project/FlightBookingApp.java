@@ -37,24 +37,27 @@ public class FlightBookingApp extends Application {
         
         Button bookButton = new Button("Book Now");
         bookButton.setOnAction(e -> {
+            String from = fromComboBox.getValue();
+            String to = toComboBox.getValue();
             String selectedClass = classComboBox.getValue();
-            if (selectedClass != null) {
+
+            if (selectedClass != null && from != null && to != null) {
                 Stage seatingWindow = new Stage();
                 switch (selectedClass) {
                     case "Economy":
-                        new AirplaneSeating().start(seatingWindow);
+                        new AirplaneSeating(from, to, selectedClass).start(seatingWindow);
                         break;
                     case "Business":
-                        new AirplaneSeating2().start(seatingWindow);
+                        new AirplaneSeating2(from, to, selectedClass).start(seatingWindow);
                         break;
                     case "First Class":
-                        new AirplaneSeating3().start(seatingWindow);
+                        new AirplaneSeating3(from, to, selectedClass).start(seatingWindow);
                         break;
                     default:
                         showAlert("Please select a valid class.");
                 }
             } else {
-                showAlert("Please select a class before booking.");
+                showAlert("Please select From, To, and Class before booking.");
             }
         });
         
@@ -89,4 +92,6 @@ public class FlightBookingApp extends Application {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    
 }
