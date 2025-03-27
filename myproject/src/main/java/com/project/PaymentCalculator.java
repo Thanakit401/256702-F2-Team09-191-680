@@ -27,7 +27,7 @@ public class PaymentCalculator {
         if ((from.equals("London") && to.equals("Tokyo")) || (from.equals("Tokyo") && to.equals("London")))
             return 9000;
 
-        return 7000; // ค่าเริ่มต้นถ้า route ไม่ match
+        return 7000;
     }
     
 }

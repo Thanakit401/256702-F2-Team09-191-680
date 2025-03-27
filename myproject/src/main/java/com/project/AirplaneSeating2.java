@@ -7,10 +7,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 
 public class AirplaneSeating2 extends Application {
     private static final int ROWS = 5;
@@ -59,7 +62,6 @@ public class AirplaneSeating2 extends Application {
             }
         }
 
-        // ปุ่ม Payment ที่อยู่ตรงกลางด้านล่าง
         Button paymentButton = new Button("Payment");
         paymentButton.setMinSize(120, 40);
         paymentButton.setOnAction(e -> {
@@ -67,22 +69,40 @@ public class AirplaneSeating2 extends Application {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Payment Summary");
             alert.setHeaderText("Total Fare");
-            alert.setContentText("From: " + from + "\nTo: " + to + "\nClass: " + seatClass + "\nTotal: " + fare + " THB");
+            
+            Label paymentDetails = new Label("From: " + from + "\nTo: " + to + "\nClass: " + seatClass + "\nTotal: " + fare + " THB");
+           
+            Image qrImage = new Image(getClass().getResource("/qr_code.png").toExternalForm());
+            ImageView qrImageView = new ImageView(qrImage);
+            qrImageView.setFitWidth(300);
+            qrImageView.setFitHeight(320);
+            
+            VBox dialogContent = new VBox(10, paymentDetails, qrImageView);
+            dialogContent.setAlignment(Pos.CENTER);
+            alert.getDialogPane().setContent(dialogContent);
+            
+            alert.getDialogPane().setPrefSize(400, 550);
+            
             alert.showAndWait();
         });
 
         VBox bottomBox = new VBox(paymentButton);
         bottomBox.setAlignment(Pos.CENTER);
-        bottomBox.setPadding(new Insets(15, 0, 20, 0)); // ระยะห่างด้านล่าง
+        bottomBox.setPadding(new Insets(15, 0, 20, 0));
 
         BorderPane root = new BorderPane();
         root.setCenter(grid);
         root.setBottom(bottomBox);
 
-        Scene scene = new Scene(root, 400, 550);
-        primaryStage.setTitle("Business Class Seating");
+        Scene scene = new Scene(root, 450, 650);
+        primaryStage.setTitle("Airplane Seating");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private String getSeatLetter(int col) {
+        if (col < 3) return Character.toString((char) ('A' + col));
+        return Character.toString((char) ('D' + (col - 3)));
     }
 
     public static void main(String[] args) {

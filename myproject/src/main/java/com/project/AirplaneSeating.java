@@ -6,10 +6,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 
 public class AirplaneSeating extends Application {
     private static final int ROWS = 10;
@@ -59,7 +62,6 @@ public class AirplaneSeating extends Application {
             }
         }
 
-        // เพิ่มปุ่ม Payment
         Button paymentButton = new Button("Payment");
         paymentButton.setMinSize(120, 40);
         paymentButton.setOnAction(e -> {
@@ -67,7 +69,20 @@ public class AirplaneSeating extends Application {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Payment Summary");
             alert.setHeaderText("Total Fare");
-            alert.setContentText("From: " + from + "\nTo: " + to + "\nClass: " + seatClass + "\nTotal: " + fare + " THB");
+            
+            Label paymentDetails = new Label("From: " + from + "\nTo: " + to + "\nClass: " + seatClass + "\nTotal: " + fare + " THB");
+           
+            Image qrImage = new Image(getClass().getResource("/qr_code.png").toExternalForm());
+            ImageView qrImageView = new ImageView(qrImage);
+            qrImageView.setFitWidth(300);
+            qrImageView.setFitHeight(320);
+            
+            VBox dialogContent = new VBox(10, paymentDetails, qrImageView);
+            dialogContent.setAlignment(Pos.CENTER);
+            alert.getDialogPane().setContent(dialogContent);
+            
+            alert.getDialogPane().setPrefSize(400, 550);
+            
             alert.showAndWait();
         });
 

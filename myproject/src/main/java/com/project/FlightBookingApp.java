@@ -32,9 +32,6 @@ public class FlightBookingApp extends Application {
         Label classLabel = new Label("Class:");
         ComboBox<String> classComboBox = createComboBox(new String[]{"Economy", "Business", "First Class"});
         
-        Label seatsLabel = new Label("Seats:");
-        Spinner<Integer> seatsSpinner = new Spinner<>(1, 10, 1);
-        
         Button bookButton = new Button("Book Now");
         bookButton.setOnAction(e -> {
             String from = fromComboBox.getValue();
@@ -69,11 +66,10 @@ public class FlightBookingApp extends Application {
             toLabel, toComboBox,
             dateLabel, datePicker,
             classLabel, classComboBox,
-            seatsLabel, seatsSpinner,
             bookButton
         );
         
-        Scene scene = new Scene(layout, 400, 500);
+        Scene scene = new Scene(layout, 400, 430);
         scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
